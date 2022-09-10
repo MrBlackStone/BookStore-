@@ -1,2 +1,2 @@
 # BookStore-
-.Net Core ile yapılmıştır.
+Patika.dev
