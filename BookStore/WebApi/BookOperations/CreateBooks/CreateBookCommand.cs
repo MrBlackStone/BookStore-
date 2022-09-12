@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.BookOperations.GetBooks;
 using WebApi.DBOperations;
@@ -12,9 +13,11 @@ namespace WebApi.BookOperations.CreateBooks
         {
             public CreateBookModel Model { get; set; }
             private readonly BookStoreDbContext _dbContext;
-            public CreateBookCommand(BookStoreDbContext dbContext)
+            private readonly IMapper _mapper;
+            public CreateBookCommand(BookStoreDbContext dbContext, IMapper mapper)
             {
                 _dbContext = dbContext;
+                _mapper = mapper;
             }
 
             public void Handler()
@@ -24,12 +27,13 @@ namespace WebApi.BookOperations.CreateBooks
                 if(book is not null)
                     throw new InvalidOperationException("Kitap Zaten Mevcut");
 
-                book = new Book();
+                // Model ile gelen veriyi Book objesine maple.
+                book = _mapper.Map<Book>(Model); //new Book();
 
-                book.Title = Model.Title;
-                book.GenreId = Model.Genre;
-                book.PageCount = Model.PageCount;
-                book.PublishDate = Model.PublishDate;
+                // book.Title = Model.Title;
+                // book.GenreId = Model.Genre;
+                // book.PageCount = Model.PageCount;
+                // book.PublishDate = Model.PublishDate;
                 
                 _dbContext.Add(book);
                 _dbContext.SaveChanges();
@@ -40,7 +44,7 @@ namespace WebApi.BookOperations.CreateBooks
         public class CreateBookModel
         {
             public string Title { get; set; }
-            public int Genre { get; set; }
+            public int GenreId  { get; set; }
             public int PageCount { get; set; }
             public DateTime PublishDate { get; set; }
         }

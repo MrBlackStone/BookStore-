@@ -23,7 +23,7 @@ namespace WebApi.BookOperations.UpdateBooks
 
                  book.GenreId = Model.Genre != default ? Model.Genre : book.GenreId; // Veri varsa ve doldurulmuşsa
                  book.Title = Model.Title !=default ? Model.Title : book.Title; 
-
+        
                  _dbContext.SaveChanges();
         }
 
